@@ -1,0 +1,43 @@
+name: Server CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    paths:
+      - 'server/**'
+      - '.github/workflows/server.yml'
+  pull_request:
+    branches: [ "main", "master" ]
+    paths:
+      - 'server/**'
+      - '.github/workflows/server.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: './server/package.json'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    # Note: test command is currently configured to exit 1 in package.json
+    # Uncomment when tests are added
+    # - name: Run tests
+    #   run: npm test
