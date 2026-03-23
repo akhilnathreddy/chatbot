@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cohere-ai": "^7.20.0",
+    "tree": "^0.1.3"
+  }
+}
